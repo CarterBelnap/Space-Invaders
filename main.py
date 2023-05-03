@@ -1,19 +1,20 @@
 #Carter Belnap
 #May 3rd 2023
 #Space Invaders Program
+
+#Imports
 import pygame, sys
 from player import Player
 
-
+#Start Program
 pygame.init()
-font = pygame.font.SysFont('Consolas', 70)
 
-# Game Setup
+# Window/FPS/Extra Setup
 fps = 60
 fpsClock = pygame.time.Clock()
 WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 800
-
+font = pygame.font.SysFont('Consolas', 70)
 
 #Setup of Starting objects
 player_group=pygame.sprite.Group()
@@ -21,6 +22,7 @@ window = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.HWSURFACE)
 pygame.display.set_caption("Space Invaders")
 player_ship = Player(325,700,30,35,'image.png')
 player_group.add(player_ship)
+
 def collision(object1, object2):
     return 
 
