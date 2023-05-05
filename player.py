@@ -16,3 +16,7 @@ class Player(pygame.sprite.Sprite):
    
     def collide(self):
         self.rect.x -= self.movex
+
+class Alien(pygame.sprite.Sprite):
+    alien = pygame.image.load('alien.png') #with .png or .jpb included in the name
+    alien = pygame.transform.scale(alien, (35, 30))  #resize image Where 35 ,35 is the size, (x,y)

@@ -18,9 +18,11 @@ font = pygame.font.SysFont('Consolas', 70)
 
 #Setup of Starting objects
 player_group=pygame.sprite.Group()
+alien_group=pygame.sprite.Group()    
 window = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.HWSURFACE)
 pygame.display.set_caption("Space Invaders")
 player_ship = Player(325,700,30,35,'image.png')
+
 player_group.add(player_ship)
 
 def collision(object1, object2):
@@ -29,13 +31,11 @@ def collision(object1, object2):
 def display():
     window.fill(0x000000)
     player_group.draw(window)
-
-    
- 
+    alien_group.draw(window)
 while True:
     display()
     player_ship.move()
-
+    
     for event in pygame.event.get():
       # if user  QUIT then the screen will close
         if event.type == pygame.QUIT:
