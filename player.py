@@ -18,5 +18,26 @@ class Player(pygame.sprite.Sprite):
         self.rect.x -= self.movex
 
 class Alien(pygame.sprite.Sprite):
-    alien = pygame.image.load('alien.png') #with .png or .jpb included in the name
-    alien = pygame.transform.scale(alien, (35, 30))  #resize image Where 35 ,35 is the size, (x,y)
+    def __init__(self,startX,startY,width,height,load_path):
+        super().__init__()
+        img_load = pygame.image.load(load_path) 
+        self.image = pygame.transform.scale(img_load , (width, height)).convert_alpha()
+        self.mask  = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect(topleft=(startX,startY))
+        self.alive=True
+        self.pop =False
+        self.count=20
+        self.movex = 1    
+        self.startx = startX
+        self.starty = startY
+
+    def update(self,type2):
+
+        if type2 == True:    
+            self.movex = -self.movex
+            self.rect.x += self.movex
+            self.rect.y += 10
+        if type2 == False:
+                self.rect.x += self.movex 
+        return self.rect.x, self.rect.y
+        
