@@ -31,13 +31,13 @@ class Alien(pygame.sprite.Sprite):
         self.startx = startX
         self.starty = startY
 
-    def update(self,type2):
+    def update(self,move):
 
-        if type2 == True:    
+        if move == True:    
             self.movex = -self.movex
             self.rect.x += self.movex
             self.rect.y += 10
-        if type2 == False:
+        if move == False:
                 self.rect.x += self.movex 
         return self.rect.x, self.rect.y
         

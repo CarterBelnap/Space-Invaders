@@ -51,26 +51,41 @@ alien24 = Alien(270,150,40,35,"alien.png")
 alien25 = Alien(320,150,40,35,"alien.png")
 alien26 = Alien(370,150,40,35,"alien.png")
 alien27 = Alien(420,150,40,35,"alien.png")
+wall_alien=pygame.draw.rect(window,(255,255,255),(100,600,1000,10))
 player_group.add(player_ship)
 alien_group.add(alien1,alien2,alien3,alien4,alien5,alien6,alien7,alien8,alien9,alien10,alien11,alien12,alien13,alien14,alien15,alien16,alien17,alien18,alien19,alien20,alien21,alien22,alien23,alien24,alien25,alien26,alien27)
 
 def collision(object1, object2):
-    return 
+    return object1.colliderect(object2)
 
-def alian_move(first,last):
+def alian_move():
   global move_alian
-  if last.rect.x>200 or first.rect.x<1:  
+  if alien9.rect.x>650 or alien1.rect.x<10:  
     move_alian = True
   else:
     move_alian = False
   display() 
 
+def alien_lose():
+  for group in alien_group:
+     if collision(group.rect,wall_alien):
+         window.blit(font.render("YOU LOSE", True, (255, 255, 255)), (200, 400))
+         move_alian = False
+         pygame.display.update()
+         pygame.time.delay(100)
+
 def display():
     window.fill(0x000000)
     player_group.draw(window)
     alien_group.draw(window)
-while True:
+
+
+
+while True:    
+    alien_lose()
+    alian_move()
     display()
+
     player_ship.move()
     
     
@@ -83,8 +98,8 @@ while True:
     #Player Borders @ 0 & (700-playersize_x)
     if player_ship.rect.x<0:
         player_ship.rect.x=0
-    elif player_ship.rect.x>670:
-        player_ship.rect.x=670
+    elif player_ship.rect.x>660:
+        player_ship.rect.x=660
 
     alien_group.update(move_alian)
     #if pygame.sprite.spritecollide(player_ship, Wallgroup, False, collided=pygame.sprite.collide_mask):
