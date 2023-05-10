@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         key_input = pygame.key.get_pressed() 
         self.movex = (t_f_list[key_input[pygame.K_a]] * -5) + (t_f_list[key_input[pygame.K_d]] * 5)
         self.rect.x += self.movex
-   
+
     def collide(self):
         self.rect.x -= self.movex
 
@@ -40,4 +40,25 @@ class Alien(pygame.sprite.Sprite):
         if move == False:
                 self.rect.x += self.movex 
         return self.rect.x, self.rect.y
+    
+class Bullets(pygame.sprite.Sprite):
+    def __init__(self,startX,startY,width,height,load_path):
+        super().__init__()
+        img_load = pygame.image.load(load_path) 
+        self.image = pygame.transform.scale(img_load , (width, height)).convert_alpha()
+        self.mask  = pygame.mask.from_surface(self.image)
+        #downson was not here :)
+        self.rect = self.image.get_rect(topleft=(startX,startY))
         
+
+    def update(self,speed,direction):
+        self.rect.y+=speed*direction
+
+class Barrier(pygame.sprite.Sprite):
+    def __init__(self,startX,startY,width,height,load_path):
+        super().__init__()
+        img_load = pygame.image.load(load_path) 
+        self.image = pygame.transform.scale(img_load , (width, height)).convert_alpha()
+        self.mask  = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect(topleft=(startX,startY))
+        lives = 10
