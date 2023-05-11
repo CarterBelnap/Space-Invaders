@@ -61,4 +61,6 @@ class Barrier(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(img_load , (width, height)).convert_alpha()
         self.mask  = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=(startX,startY))
-        lives = 10
+        self.lives = 5
+
+    
