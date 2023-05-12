@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 
 class Player(pygame.sprite.Sprite):
     def __init__(self,startX,startY,width,height,load_path):
@@ -62,5 +62,8 @@ class Barrier(pygame.sprite.Sprite):
         self.mask  = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=(startX,startY))
         self.lives = 5
-
+        self.width = width
+        self.height = height
+    def update(self):
+        self.image = pygame.transform.scale(self.image , (self.width, self.height *(self.lives/5))).convert_alpha()
     

@@ -2,13 +2,6 @@
 #May 3rd 2023
 #Space Invaders Program
 
-
-#Update Barrier Hits
-#Player Collison/Lives
-#Score
-#Asteroids?
-#
-
 #Imports
 import pygame, sys, random
 from player import Player, Alien, Barrier, Bullets
@@ -22,11 +15,13 @@ fpsClock = pygame.time.Clock()
 WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 800
 move_alian = False
+win_check = False
 alien_shot_time = 30
 player_shot_time = 15
 barrier_count = 3
+score = 0
 font = pygame.font.SysFont('Consolas', 70)
-
+score_font = pygame.font.SysFont('Consolas', 40)
 #Setup of Starting objects
 player_group=pygame.sprite.Group()
 alien_group=pygame.sprite.Group()
@@ -95,11 +90,22 @@ def alien_lose():
         lose()
 
 def lose():
-    global move_alian
     window.blit(font.render("YOU LOSE", True, (255, 255, 255)), (200, 400))
-    move_alian = False
+    player_group.empty()
+    barrier_group.empty()
+    alien_group.empty()
     pygame.display.update()
     pygame.time.delay(100)
+    
+
+def win():
+   if len(alien_group) == 0:
+      window.blit(font.render("YOU WIN", True, (255, 255, 255)), (200, 400))
+      player_group.empty()
+      barrier_group.empty()
+      alien_group.empty()
+      pygame.display.update()
+      pygame.time.delay(100)
 
 def alien_bullets():
    global alien_shot_time
@@ -117,6 +123,23 @@ def player_bullets():
       bulletp_group.add(Bullets(player_ship.rect.x + 15,player_ship.rect.y - 13,10,20,"bullet.png"))
       player_shot_time = 15
 
+def bullet_hits():
+  global barrier_count, score
+  for pgroup in bulletp_group:
+    if pygame.sprite.spritecollide(pgroup, alien_group, True, collided=pygame.sprite.collide_mask):
+      pgroup.kill()
+      score += 10
+  for bgroup in barrier_group:
+    if pygame.sprite.spritecollide(bgroup, bulleta_group, True, collided=pygame.sprite.collide_mask) or pygame.sprite.spritecollide(bgroup, bulletp_group, True, collided=pygame.sprite.collide_mask):
+      bgroup.lives-=1
+      barrier_group.update()
+      if bgroup.lives ==0:
+        bgroup.kill()
+  for agroup in bulleta_group:
+     if pygame.sprite.spritecollide(agroup, player_group, False, collided=pygame.sprite.collide_mask):
+      score -=20
+      agroup.kill()
+
 def display():
     window.fill(0x000000)
     player_group.draw(window)
@@ -124,25 +147,17 @@ def display():
     barrier_group.draw(window)
     bulletp_group.draw(window)
     bulleta_group.draw(window)
+    window.blit(score_font.render(f"Score:{score}", True, (255, 255, 255)), (30,750))
 
-def bullet_hits():
-  global barrier_count
-  for pgroup in bulletp_group:
-    if pygame.sprite.spritecollide(pgroup, alien_group, True, collided=pygame.sprite.collide_mask):
-      pgroup.kill()
-  for bgroup in barrier_group:
-    if pygame.sprite.spritecollide(bgroup, bulleta_group, True, collided=pygame.sprite.collide_mask):
-      bgroup.lives-=1
-      if bgroup.lives ==0:
-        bgroup.kill()
 
-while True:    
+while win_check == False:    
     alien_lose()
     alian_move()
     display()
     player_bullets()
     alien_bullets()
     bullet_hits()
+    
     player_ship.move()
     alien_group.update(move_alian)
     bulletp_group.update(3,-1)
@@ -159,7 +174,6 @@ while True:
         player_ship.rect.x=0
     elif player_ship.rect.x>660:
         player_ship.rect.x=660
-
-        
+ 
     pygame.display.update() #update the display
     fpsClock.tick(fps) #speed of redraw
