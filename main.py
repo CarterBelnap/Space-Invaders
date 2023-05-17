@@ -134,13 +134,14 @@ def lose():
     barrier_group.empty()
     alien_reset()
     player_reset()
-    display()
+    pygame.display.update()
+    pygame.time.delay(100)
 
 
 
 
 def win():      
-  global win_check, score, barrier_count       
+  global win_check, score, barrier_count,alien_lives       
   player_group.empty()
   alien_group.empty()
   barrier_group.empty() 
@@ -150,12 +151,13 @@ def win():
   window.blit(font.render("YOU WIN", True, (255, 255, 255)), (200, 400))
   window.blit(score_font.render(f"SCORE:{score}", True, (255, 255, 255)), (225,500))
   window.blit(font.render("PRESS ESC", True, (255, 255, 255)), (140, 600))
-  window.blit(font.render("TO QUIT", True, (255, 255, 255)), (180, 670))
+  window.blit(font.render("TO RESTART", True, (255, 255, 255)), (180, 670))
   key_input = pygame.key.get_pressed()
   if key_input[pygame.K_ESCAPE]:
     score = 0
     barrier_count = 3
     win_check = False
+    alien_lives=27
   pygame.display.update()
   pygame.time.delay(100)   
 def alien_bullets():
@@ -169,7 +171,7 @@ def alien_bullets():
         pass
     bulleta_group.add(Bullets(shot.rect.x ,shot.rect.y,10,20,"bullet.png"))
     alien_shot_time = 15
-
+    
 
 def player_bullets():
    global player_shot_time, player_ship
